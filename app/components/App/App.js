@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Loading from '../Loading/Loading';
+import Header from '../Header/Header';
+import Nav from '../Nav/Nav';
 import Forecast from '../Forecast/Forecast';
-import { getCurrentPosition, getCurrentLocation, getForecast } from '../../utils/api';  
+import { getCurrentPosition, getCurrentLocation, getForecast, getHourlyForecast } from '../../utils/api';  
+import { Route } from 'react-router-dom';
 
 export default class App extends Component {
     constructor() {
@@ -9,14 +12,17 @@ export default class App extends Component {
         this.state = {
             locations: [],
             forecast: {},
+            currentForecast: {},
+            hourlyForecast: {},
+            currentLocation: null,
             loading: true
         }
         this.getForecast = this.getForecast.bind(this);
+        this.updateForecastDay = this.updateForecastDay.bind(this);
         this.defaultLocation = { name: 'London', latitude: 51.5287718, longitude: -0.2416812 }; 
     }
     componentDidMount() {
         const localStorageLocations = localStorage.getItem('locations');
-
         if(localStorageLocations) {
             this.setState({
                 locations: JSON.parse(localStorageLocations)
@@ -43,10 +49,14 @@ export default class App extends Component {
         localStorage.setItem('locations', JSON.stringify(newState.locations));
     }
 
+    
+
     getForecast(location, saveLocation=true) {
         getForecast(location)
         .then((response) => {
             const forecast = response.data;
+            const currentForecast = forecast.forecast.forecastday[0];
+            const currentLocation = forecast.location.name;
             const locations = [...this.state.locations];
             let newLocation = true;
             for (let location of locations) {
@@ -64,23 +74,30 @@ export default class App extends Component {
             }
             this.setState({
                 forecast,
+                currentForecast,
+                currentLocation,
                 locations,
                 loading: false
             });
+           // getHourlyForecast(currentLocation,12);
         })
     }
 
-    changeForecastDay(day) {
-        
+    updateForecastDay(day) {
+        const currentForecast = this.state.forecast.forecast.forecastday[day];
+        this.setState({ currentForecast });
     }
 
     render() {
+        const { match, location } = this.props;
         return (
             <div>
+                <Header/>
+                <Nav locations={this.state.locations} getForecast={this.getForecast} />
                 { this.state.loading ?
                     <Loading/>
                     :
-                    <Forecast forecast={this.state.forecast} />
+                    <Forecast currentForecast={this.state.currentForecast} forecast={this.state.forecast} updateForecastDay={this.updateForecastDay} />
                 }
             </div>
         )
