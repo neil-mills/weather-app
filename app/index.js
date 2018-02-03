@@ -1,5 +1,6 @@
 import React from 'react';
 import App from './components/App/App';
+import Day from './components/Day/Day';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from './components/Header/Header';
@@ -8,7 +9,6 @@ import NotFound from './components/NotFound/NotFound';
 const Root = () => (
     <Router>
         <div className="container">
-            <Header/>
             <Switch>
                 <Route exact path="/" component={App} />
                 <Route component={NotFound} />  
@@ -17,4 +17,4 @@ const Root = () => (
     </Router>
 )
 
-render(<Root/>,document.querySelector('#app'));
+render(<Root/>,document.querySelector('#app')); 

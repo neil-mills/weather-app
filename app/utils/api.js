@@ -19,6 +19,49 @@ const getForecast = (location, duration=7) => {
         .then((results) => {
             resolve(results);
         })
+        .catch((err) => reject(err.message))
+    })
+}
+
+const searchLocation = (query) => {
+    return new Promise((resolve, reject) => {
+        const uri = `http://api.apixu.com/v1/search.json?key=${apiKey}&q=${query}`;
+        axios
+        .get(encodeURI(uri))
+        .then((results) => {
+            resolve(results);
+        })
+        .catch((err) => reject(err.message))
+    });
+}
+
+const getHourlyForecast = (location, startHour = 12) => {
+    return new Promise((resolve, reject) => {
+        const calls=[];
+        const numHours = 5;
+        for(let i=0; i < numHours; i++) {
+            const hour = i + 12;
+            calls.push(getHourForecast(location, hour))
+        }
+        axios
+        .all(calls)
+        .then((data) => {
+            console.log('all hours returned', data);
+            resolve(data)
+        })
+        .catch((err) => reject(error.message))
+    })
+}
+
+const getHourForecast = (location, time=12) => {
+    return new Promise((resolve, reject) => {
+        const uri = `http://api.apixu.com/v1/forecast.json?key=${apiKey}&q=${location}&hour=${time}`;
+        console.log(uri);
+        axios
+        .get(encodeURI(uri))
+        .then((results) => {
+            resolve(results);
+        })
         .catch((err) => reject(error.message))
     })
 }
@@ -61,6 +104,6 @@ const getCurrentLocation = () => {
 };
 */
 
-export { getCurrentPosition, getCurrentLocation, getForecast };
+export { getCurrentPosition, getCurrentLocation, getForecast, getHourlyForecast, searchLocation };
 
 
