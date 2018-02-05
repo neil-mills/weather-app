@@ -34,16 +34,24 @@ export default class Forecast extends Component {
                     </ul>
                 </div>
             </header>
-                <div className="">
-                    <svg className="controls-link__icon">
-                        <use xlinkHref={`#${icon.name}`}></use>
-                    </svg>
-                    <p className="">{current.day.temp_c}&deg;</p>
+                <div className="conditions">
+                    <div className="conditions__left">
+                        <svg className="conditions__icon" viewBox="0 0 60 60">
+                            <use xlinkHref={`#${icon.name}`}></use>
+                        </svg>
+                    </div>
+                    <div className="conditions__right">
+                        <span className="conditions__temp">{Math.round(current.day.maxtemp_c)}&deg;</span>
+                    </div>
                 </div>
-                <div className="forecast-conditions">
-                    <p className="">{current.day.condition.text}</p>
-                </div>
-                <DayMenu forecastDays={forecastDays} updateForecastDay={this.props.updateForecastDay} />
+                <p className="forecast__text">
+                    {current.day.condition.text}
+                </p>
+                <DayMenu
+                    forecastDays={forecastDays}
+                    updateForecastDay={this.props.updateForecastDay}
+                    getIcon={this.props.getIcon}
+                />
             </div>
         )
     }

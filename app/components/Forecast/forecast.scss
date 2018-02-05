@@ -5,7 +5,7 @@
 .forecast {
     &__location {
         @include font-size-h1;
-        margin-bottom: spacing($heading-margin, 0.5);
+        margin: spacing($heading-margin, 0.5) 0;
         line-height: 1.2;
         line-height: 1;
     }
@@ -14,23 +14,31 @@
         font-weight: $light;
         @include font-size-h2;
         line-height: 1;
+        margin-bottom: spacing($heading-margin, 0.5);
     }
     &__meta {
         display: flex;
         justify-content: space-between;
         margin-bottom: $paragraph-margin;
+        flex-wrap: wrap;
+    }
+    &__text {
+        @include font-size-h3;
+        line-height: 1.2;
+        font-weight: $semi-bold;
+        margin-top: 0;
     }
 }
 .astro {
-    display: inline-block;
     @include reset-list;
     margin: 0;
-    align-self: flex-end;
+    flex: 0 1 100%;
 }
 .astro-item {
     float: left;
     position: relative;
     line-height: 20px;
+    
     &__icon {
         position: absolute;
         top: 0;
@@ -45,5 +53,51 @@
     }
     &--sunset {
         padding-left: 10px;
+    }
+}
+.conditions {
+    display: flex;
+    &__left {
+        flex: 1 1 60%;
+    }
+    &__right {
+        flex: 1;
+        padding-left: 20px;
+        align-self: flex-start;
+    }
+    &__icon {
+        fill: $white;
+        width: 100%;
+        max-width: 250px;
+
+    }
+    &__temp {
+        //@include font-size-h1;
+        font-size: 18vw;
+        font-weight: $bold;
+        display: block;
+        text-align: right;
+        line-height: 1;
+        padding-top: 20px;
+    }
+}
+
+@include screen-bigger-than($screen-phone) {
+    .forecast {
+        &__day {
+            margin: 0;
+        }
+        &__meta {
+            flex-wrap: nowrap;
+        }
+    }
+    .astro {
+        flex: 0 1 auto;
+        align-self: flex-end;
+    }
+    .conditions {
+        &__temp {
+            @include font-size(80px);
+        }
     }
 }
