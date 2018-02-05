@@ -50,9 +50,9 @@ var config = {
         }),
         new ExtractTextPlugin({
             filename: "[name].css",
-            disable: false,
-            allChunks: true,
-            ignoreOrder: true
+            //disable: false,
+            allChunks: true//,
+            //ignoreOrder: true
         })
     ]
 }
