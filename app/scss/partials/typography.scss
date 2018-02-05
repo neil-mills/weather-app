@@ -2,12 +2,76 @@
     '../../scss/variables/variables',
     '../../scss/mixins/mixins';
 
+h1,
+h2,
+h3,
+h4 {
+    font-weight: $bold;
+    line-height: $line-height-heading;
+    margin: $heading-margin 0;
+}
+h1 {
+    @include font-size-h1;
+}
+h2 {
+    @include font-size-h2;
+}
+h3 {
+    @include font-size-h3;
+}
+h4 {
+    @include font-size-h4;
+}
+h5 {
+    @include font-size-h5;
+}
+h6 {
+    @include font-size-h6;
+}
 .light {
     font-weight: $light;
 }
 .regular {
     font-weight: $regular;
 }
-.medium {
-    font-weight: $medium;
+.semi-bold {
+    font-weight: $semi-bold;
+}
+p {
+    margin: $paragraph-margin 0;
+}
+.no-tm {
+    margin-top: 0;
+}
+.no-bm {
+    margin-bottom: 0;
+}
+p {
+    &.half-bm {
+        margin-bottom: spacing($paragraph-margin * 0.5);
+    }
+    &.half-tm {
+        margin-top: spacing($paragraph-margin * 0.5);
+    }
+    &.half-m {
+        margin-top: spacing($paragraph-margin * 0.5);
+        margin-bottom: spacing($paragraph-margin * 0.5);
+    }
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    &.half-bm {
+        margin-bottom: spacing($heading-margin * 0.5);
+    }
+    &.half-tm {
+        margin-top: spacing($heading-margin * 0.5);
+    }
+    &.half-m {
+        margin-top: spacing($heading-margin * 0.5);
+        margin-bottom: spacing($heading-margin * 0.5);
+    }
 }

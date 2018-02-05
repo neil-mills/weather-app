@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import moment from 'moment';
+import './day-menu.scss';
 
 export default class DayMenu extends Component {
     constructor() {

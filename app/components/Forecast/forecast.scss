@@ -1,0 +1,49 @@
+@import 
+    '../../scss/variables/variables',
+    '../../scss/mixins/mixins';
+
+.forecast {
+    &__location {
+        @include font-size-h1;
+        margin-bottom: spacing($heading-margin, 0.5);
+        line-height: 1.2;
+        line-height: 1;
+    }
+    &__day {
+        margin: 0;
+        font-weight: $light;
+        @include font-size-h2;
+        line-height: 1;
+    }
+    &__meta {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: $paragraph-margin;
+    }
+}
+.astro {
+    display: inline-block;
+    @include reset-list;
+    margin: 0;
+    align-self: flex-end;
+}
+.astro-item {
+    float: left;
+    position: relative;
+    line-height: 20px;
+    &__icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 30px;
+        height: 20px;
+        fill: $yellow;
+    }
+    &--sunrise {
+        font-weight: $bold;
+        padding-left: 40px;
+    }
+    &--sunset {
+        padding-left: 10px;
+    }
+}

@@ -10,6 +10,24 @@
   font-size: calculateRem($size);
 }
 
+@mixin font-size-h1 {
+  @include font-size($font-size-h1);
+}
+@mixin font-size-h2 {
+  @include font-size($font-size-h2);
+}
+@mixin font-size-h3 {
+  @include font-size($font-size-h3);
+}
+@mixin font-size-h4 {
+  @include font-size($font-size-h4);
+}
+@mixin font-size-h5 {
+  @include font-size($font-size-h5);
+}
+@mixin font-size-h6 {
+  @include font-size($font-size-h6);
+}
 @mixin font-size-p {
     @include font-size($base-font-size)
 }

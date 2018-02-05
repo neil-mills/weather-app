@@ -5,6 +5,17 @@ import Nav from '../Nav/Nav';
 import Forecast from '../Forecast/Forecast';
 import { getCurrentPosition, getCurrentLocation, getForecast, getHourlyForecast } from '../../utils/api';  
 import { Route } from 'react-router-dom';
+import '../../svg/cloud.svg';
+import '../../svg/heavy-rain.svg';
+import '../../svg/rain.svg';
+import '../../svg/showers.svg';
+import '../../svg/snow.svg';
+import '../../svg/sun-cloud.svg';
+import '../../svg/sun-rain.svg';
+import '../../svg/sunny.svg';
+import '../../svg/thunder.svg';
+import icons from '../../utils/icons';
+import './app.scss';
 
 export default class App extends Component {
     constructor() {
@@ -49,7 +60,11 @@ export default class App extends Component {
         localStorage.setItem('locations', JSON.stringify(newState.locations));
     }
 
-    
+    getIcon(code) {
+        const forecastIcon = icons.data.filter((icon) => icon.code === code)
+        if(forecastIcon) return forecastIcon[0];
+        return false;
+    }
 
     getForecast(location, saveLocation=true) {
         getForecast(location)
@@ -92,13 +107,25 @@ export default class App extends Component {
         const { match, location } = this.props;
         return (
             <div>
+                <Nav
+                    locations={this.state.locations}
+                    getForecast={this.getForecast}
+                    className="off-canvas"
+                    role="navigation"
+                />
+                <main className="main" role="main">
                 <Header/>
-                <Nav locations={this.state.locations} getForecast={this.getForecast} />
-                { this.state.loading ?
-                    <Loading/>
-                    :
-                    <Forecast currentForecast={this.state.currentForecast} forecast={this.state.forecast} updateForecastDay={this.updateForecastDay} />
-                }
+                    { this.state.loading ?
+                        <Loading/>
+                        :
+                        <Forecast
+                            currentForecast={this.state.currentForecast}
+                            forecast={this.state.forecast}
+                            updateForecastDay={this.updateForecastDay}
+                            getIcon={this.getIcon}
+                        />
+                    }
+                </main>
             </div>
         )
     }

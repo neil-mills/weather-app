@@ -1,3 +1,4 @@
+@import '../variables/variables';
 @mixin clearfix {
     &:after {
       content: "";
@@ -10,4 +11,15 @@
     list-style-type: none;
     padding: 0;
   }
+
+  @mixin centered() {
+    transform: translate(-50%,-50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+
+  @function spacing($var: $paragraph-margin, $unit: 2 ) {
+    @return calc(#{$var} * 0.5);
+  } 
   

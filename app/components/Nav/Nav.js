@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { searchLocation } from '../../utils/api';
+import './nav.scss';
 
 export default class Nav extends Component {
     constructor(){
