@@ -12,28 +12,33 @@ export default class Forecast extends Component {
         const forecastDays = this.props.forecast.forecast.forecastday;
         let day = moment(new Date(current.date)).format('dddd');
         const icon = this.props.getIcon(current.day.condition.code);
+        if(this.props.isToday(current.date)) {
+            day = 'Today';
+        }
+        /*
         if(moment(new Date()).format('MMM Do YY') === moment(new Date(current.date)).format('MMM Do YY')) {
             day = 'Today';
         }
+        */
         return (
             <div className="forecast">
                 <header className="forecast__header">
                     <h2 className="forecast__location">{location.name}</h2>
-                <div className="forecast__meta">
-                    <span className="forecast__day">
-                        {day}
-                    </span>
-                    <ul className="astro">
-                        <li className="astro-item astro-item--sunrise">
-                            <svg className="astro-item__icon">
-                                <use xlinkHref="#sunrise"></use>
-                            </svg>
-                            {current.astro.sunrise}
-                        </li>
-                        <li className="astro-item astro-item--sunset">{current.astro.sunset}</li>
-                    </ul>
-                </div>
-            </header>
+                    <div className="forecast__meta">
+                        <span className="forecast__day">
+                            {day}
+                        </span>
+                        <ul className="astro">
+                            <li className="astro-item astro-item--sunrise">
+                                <svg className="astro-item__icon">
+                                    <use xlinkHref="#sunrise"></use>
+                                </svg>
+                                {current.astro.sunrise}
+                            </li>
+                            <li className="astro-item astro-item--sunset">{current.astro.sunset}</li>
+                        </ul>
+                    </div>
+                </header>
                 <div className="conditions">
                     <div className="conditions__left">
                         <svg className="conditions__icon" viewBox="0 0 60 60">
@@ -51,6 +56,8 @@ export default class Forecast extends Component {
                     forecastDays={forecastDays}
                     updateForecastDay={this.props.updateForecastDay}
                     getIcon={this.props.getIcon}
+                    isToday={this.props.isToday}
+                    isCurrentDate={this.props.isCurrentDate}
                 />
             </div>
         )

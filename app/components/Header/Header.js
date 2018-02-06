@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import './header.scss';
 import '../../svg/menu.svg';
+import '../../svg/refresh.svg';
 
 export default class Header extends Component {
+    constructor() {
+        super();
+        this.handleClick = this.handleClick.bind(this);
+    }
 
     handleClick(e) {
         e.preventDefault();
+        this.props.toggleMenuState()
     }
 
     render() {

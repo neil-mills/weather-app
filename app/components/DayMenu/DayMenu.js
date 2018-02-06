@@ -7,7 +7,7 @@ export default class DayMenu extends Component {
         super();
         this.state = {
             itemStyle: { flex: '0 0 0px' },
-            listStyle: { flex: '0 0 0px' } 
+            listStyle: { width: '0px' } 
         }
         this.handleClick = this.handleClick.bind(this);
         this.handleResize = this.handleResize.bind(this);
@@ -28,10 +28,10 @@ export default class DayMenu extends Component {
     }
 
     handleResize() {
-        const windowWidth = window.innerWidth;
-        const itemWidth = (windowWidth/100) * 28;
-        const itemStyle = { flex: `0 0 ${(windowWidth/100) * 28}px` } 
-        const listStyle = { flex: `0 0 ${itemWidth}px` };
+        const menuWidth = document.querySelector('.day-menu').clientWidth;
+        const itemWidth = (menuWidth/100) * 30;
+        const itemStyle = { flex: `0 0 ${itemWidth}px` } 
+        const listStyle = { width: `${itemWidth * this.props.forecastDays.length}px` };
         this.setState({
             itemStyle,
             listStyle
@@ -42,14 +42,18 @@ export default class DayMenu extends Component {
         const daysOfWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
         const date = moment(new Date(day.date));
         const icon = this.props.getIcon(day.day.condition.code);
+        const isToday = this.props.isToday(day.date);
+        const isCurrentDate = this.props.isCurrentDate(day.date);
+        const dayName = isToday ? 'Today' : date.format('ddd');
         return (
             <li
                 key={key}
                 className="day-item"
                 style={this.state.itemStyle}
                 onClick={(e) => this.handleClick(e, key)}
+                data-active={isCurrentDate}
             >
-                <p className="day-item__title">{date.format('ddd')}</p>
+                <p className="day-item__title">{dayName}</p>
                 <div className="day-item__column day-item__column--left">
                     <svg className="day-item__icon" viewBox="0 0 60 60">
                         <use xlinkHref={`#${icon.name}`}></use>
@@ -66,7 +70,10 @@ export default class DayMenu extends Component {
     render() {
         return (
             <menu className="day-menu">
-                <div className="day-menu__track">
+                <div
+                    className="day-menu__track"
+                    style={this.state.listStyle}
+                >
                     <ul
                         className="day-menu__list"
                         style={this.state.listStyle}

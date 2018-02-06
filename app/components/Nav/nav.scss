@@ -1,7 +1,99 @@
+@import 
+    '../../scss/variables/variables',
+    '../../scss/mixins/mixins';
 .nav {
     position: absolute;
     display: block;
+    top: 70px;
+    left: 0;
+    opacity: 1;
+    width: 300px;
+    z-index: 0;
+}
+.search-form {
+    background-color: $grey;
+    padding: 15px;
+    margin: 0;
+    position: absolute;
     top: 0;
     left: 0;
-    opacity: 0;
+    width: 300px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    transition: width 0.3s ease-in-out;
+    z-index: 1;
+    &__input {
+        width: 100%;
+        border: none;
+        outline: none;
+        height: 40px;
+        line-height: 40px;
+        padding: 5px 10px;
+        @include font-size-h4;
+        color: $grey;
+        flex: 0 1 100%;
+        transition: width 0.3s ease-in-out;
+    }
+    &__cancel {
+        flex: 0 1 0;
+        display: none;
+        text-align: center;
+        @include font-size-h4;
+        padding: 0 0 0 15px;
+        height: 40px;
+        line-height: 40px;
+    }
+    &[data-expanded='true'] {
+        width: 100%;
+        z-index: 3;
+        .search-form__input {
+            flex: 0 1 1;
+        }
+        .search-form__cancel {
+            display: block;
+        }
+    }
+}
+.locations-list {
+   @include reset-list;
+    margin: 0;
+}
+.location-item {
+    color: $black;
+    padding: 15px;
+    display: flex;
+    border-bottom: 1px solid #c6c6c6;
+    &__col {
+        flex: 0 0 70%;
+        display: flex;
+        flex-wrap: wrap;
+        &--right {
+            flex: 0 0 30%;
+        }
+    }
+    &__label {
+        @include font-size-h3;
+        width: 100%;
+        display: block;
+        line-height: 1.2;
+        &--name {
+            font-weight: $bold;
+        }
+        &--region {
+            font-weight: $light;
+            @include font-size-h4;
+        }
+    }
+    &__icon {
+        width: 100%;
+        fill: $black;
+        flex: 1 1 60%;
+        height: 60px;
+    }
+    &__temp {
+        @include font-size-h3;
+        font-weight: $bold;
+        flex: 1 1 40%;
+    }
 }
