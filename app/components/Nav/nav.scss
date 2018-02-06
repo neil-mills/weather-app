@@ -1,6 +1,14 @@
 @import 
     '../../scss/variables/variables',
     '../../scss/mixins/mixins';
+.off-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: block;
+    z-index: 0;
+}
 .nav {
     position: absolute;
     display: block;
@@ -14,12 +22,9 @@
     background-color: $grey;
     padding: 15px;
     margin: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 300px;
     display: flex;
-    flex-wrap: nowrap;
+    flex: 1;
     justify-content: space-between;
     transition: width 0.3s ease-in-out;
     z-index: 1;
@@ -44,9 +49,22 @@
         height: 40px;
         line-height: 40px;
     }
-    &[data-expanded='true'] {
+    [data-expanded='true'] & {
         width: 100%;
         z-index: 3;
+        &:after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 50%;
+            width: 100%;
+            max-width: 480px;
+            transform: translateX(-50%);
+            height: 100%;
+            display: block;
+            background-color: rgba(0,0,0,.4);
+            z-index: -1;
+        }
         .search-form__input {
             flex: 0 1 1;
         }
@@ -54,6 +72,23 @@
             display: block;
         }
     }
+}
+.search-results {
+    @include reset-list;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background-color: $white;
+    display: block;
+    margin: 0;
+    z-index: 1;
+}
+.result-item {
+    color: $grey;
+    @include font-size-h4;
+    padding: 10px;
+    border-bottom: 1px solid $light-grey;
 }
 .locations-list {
    @include reset-list;

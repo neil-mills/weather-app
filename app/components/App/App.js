@@ -39,16 +39,19 @@ export default class App extends Component {
         this.defaultLocation = { name: 'London', latitude: 51.5287718, longitude: -0.2416812 }; 
         this.toggleMenuState = this.toggleMenuState.bind(this);
         this.updateLocationForecasts = this.updateLocationForecasts.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
         const localStorageLocations = localStorage.getItem('locations');
         if(localStorageLocations) {
             const locations = JSON.parse(localStorageLocations);
-            if(locations.length) {
+        //    this.setState({ locations })
+           
                 this.updateLocationForecasts(locations);
-            } 
-        }
+           
+       
+        } 
         if(navigator.geolocation) {
             getCurrentPosition()
             .then(({ latitude, longitude }) => {
@@ -67,6 +70,8 @@ export default class App extends Component {
 
     componentWillUpdate(newProps, newState) {
         localStorage.setItem('locations', JSON.stringify(newState.locations));
+//console.log(newState.locations);
+       // this.updateLocationForecasts(newState.locations);
     }
 
     updateLocationForecasts(locations) {
@@ -77,10 +82,9 @@ export default class App extends Component {
         axios
         .all(promises)
         .then((forecasts) => {
-            console.log('update location forecasts',forecasts);
-            const locations = {...this.state.locations}
+            const locations = [...this.state.locations]
             forecasts.map((forecast, index) => {
-                const filteredLocations = this.state.locations.filter((location) => location.name === forecast.location.name);
+                const filteredLocations = locations.filter((location) => location.name === forecast.data.location.name);
                 if(filteredLocations.length) {
                     locations[index].forecast = forecast
                 }
@@ -90,6 +94,7 @@ export default class App extends Component {
                 navLoading: false
             })
         })
+        .catch((err) => console.log(err.message))
     }
 
     getIcon(code) {
@@ -149,8 +154,7 @@ export default class App extends Component {
                 currentLocation,
                 currentDate,
                 locations,
-                loading: false,
-                navLoading: false
+                loading: false
             });
            // getHourlyForecast(currentLocation,12);
         })
@@ -170,26 +174,37 @@ export default class App extends Component {
         this.setState({ menuActive })
     }
 
+    handleClick(e) {
+        const value = e.currentTarget.getAttribute('data-move');
+        if(value === 'true') {
+            this.setState({ menuActive: false });
+        }
+    }
+
     render() {
         const { match, location } = this.props;
         return (
             <div>
                 { !this.state.navLoading &&
-                <Nav
-                    locations={this.state.locations}
-                    getForecast={this.getForecast}
-                    getIcon={this.getIcon}
-                    className="off-canvas"
-                    role="navigation"
-                />
+                    <Nav
+                        locations={this.state.locations}
+                        getForecast={this.getForecast}
+                        toggleMenuState={this.toggleMenuState}
+                        getIcon={this.getIcon}
+                        className="off-canvas"
+                        role="navigation"
+                    />
                 }
                 <main
                     className="main"
                     role="main"
                     data-move={this.state.menuActive}
+                    onClick={this.handleClick}
                 >
                 <Header
                     toggleMenuState={this.toggleMenuState}
+                    navLoading={this.state.navLoading}
+                    loading={this.state.loading}
                 />
                     { this.state.loading ?
                         <Loading/>

@@ -10,17 +10,36 @@ export default class Nav extends Component {
         this.drawResult = this.drawResult.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.expandSearch = this.expandSearch.bind(this);
+        this.closeSearch = this.closeSearch.bind(this);
         this.state = {
             searchResults: [],
-            searchActive: false
+            searchActive: false,
+            offCanvasStyle: {zIndex: 0}
         }
     }
 
     expandSearch() {
         if(!this.state.searchActive) {
-            this.setState({ searchActive: true });
+            const offCanvasStyle = {zIndex: 100}
+            this.setState({
+                searchActive: true,
+                offCanvasStyle
+            });
             this.searchInput.focus();
         }
+    }
+
+    closeSearch() {
+        this.setState({
+            searchActive: false,
+            searchResults: []
+        });
+        this.searchInput.value = "";
+        this.searchInput.blur();
+        const offCanvasStyle = {zIndex: 0}
+        setTimeout(() => {
+            this.setState({ offCanvasStyle })
+        },400);
     }
 
     handleChange(e) {
@@ -35,6 +54,12 @@ export default class Nav extends Component {
     handleClick(e, location, save=true) {
         e.preventDefault();
         this.props.getForecast(location, save);
+        const offCanvasStyle = {zIndex: 0}
+        this.setState({ offCanvasStyle })
+        this.props.toggleMenuState();
+        setTimeout(() => {
+            this.closeSearch();
+        },400)
     }
 
     drawResult(key, location) {
@@ -42,6 +67,7 @@ export default class Nav extends Component {
             <li
                 key={key}
                 onClick={(e) => this.handleClick(e, location.name)}
+                className="result-item"
             >
                 {location.name}
             </li>
@@ -73,8 +99,8 @@ export default class Nav extends Component {
 
     render() {
         return (
-            <div>
-                <form className="search-form" data-expanded={this.state.searchActive}>
+            <div className="off-canvas" data-expanded={this.state.searchActive} style={this.state.offCanvasStyle}>
+                <form className="search-form">
                     <input
                         type="text"
                         placeholder="Enter a location"
@@ -85,17 +111,16 @@ export default class Nav extends Component {
                     />
                     <a
                         className="search-form__cancel"
+                        onClick={(e) => e.preventDefault() || this.closeSearch()}
                     >
                         Cancel
                     </a>
-                    { this.state.searchResults.length > 0 &&
-                        <ul className="search-results">
-                        {
-                            this.state.searchResults.map((location, index) => this.drawResult(index, location))
-                        }
-                        </ul>
-                    }
                 </form>
+                { this.state.searchResults.length > 0 &&
+                        <ul className="search-results">
+                            { this.state.searchResults.map((location, index) => this.drawResult(index, location)) }
+                        </ul>
+                 }
                 <nav className="nav">
                     { this.props.locations && 
                         <ul className="locations-list">
