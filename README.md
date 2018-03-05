@@ -14,7 +14,7 @@ BBC weather like application built with ReactJS
 Clone this repo
 ```
 git clone https://github.com/neil-mills/weather-app.git
-cd sportz
+cd weather-app
 ```
 
 Install all the dependencies
